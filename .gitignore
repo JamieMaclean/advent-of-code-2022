@@ -1,0 +1,65 @@
+.log
+# App artifacts
+/_build
+/db
+/deps
+/*.ez
+/cover/
+/priv/certs/server_development
+
+# Generated on crash by the VM
+erl_crash.dump
+
+# The directory NPM downloads your dependencies sources to.
+/assets/node_modules
+
+# If NPM crashes, it generates a log, let's ignore it too.
+npm-debug.log
+
+# Since we are building assets from web/static,
+# we ignore priv/static. You may want to comment
+# this depending on your deployment strategy.
+/priv/static/
+
+# The config/prod.secret.exs file by default contains sensitive
+# data and you should not commit it into version control.
+#
+# Alternatively, you may comment the line below and commit the
+# secrets file as long as you replace its contents by environment
+# variables.
+/config/prod.secret.exs
+/.mix
+
+# dump bin to throw stuff at
+/tmp
+
+# ignore env variables file
+.env
+
+.DS_Store
+
+# ignore benchfella snapshots
+bench/snapshots
+
+#docker
+docker/docker-compose.dev.override.yml
+docker/dev/pgcli.conf
+/doc
+
+# Test screenshots:
+/screenshots/*
+.queries.sql
+.vsls.json
+
+# NPM cache
+/assets/.cache
+
+# ElixirLS
+/.elixir_ls
+
+# Backstop
+assets/backstop_data/*
+assets/backstop.json
+
+logfile
+

@@ -1,4 +1,4 @@
-defmodule AOD do
+defmodule AOC do
   @moduledoc """
   Documentation for `AOD`.
   """
