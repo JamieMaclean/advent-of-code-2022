@@ -14,9 +14,11 @@ defmodule Day2.Game do
   }
 
   def new([move_1, move_2]) do
+    player_1 = parse_move(move_1)
+
     %Game{
-      player_1: parse_move(move_1),
-      player_2: parse_response(move_2)
+      player_1: player_1,
+      player_2: parse_response(move_2, player_1)
     }
   end
 
@@ -45,7 +47,16 @@ defmodule Day2.Game do
     Enum.find(@moves, fn move -> move.move == player_move end)
   end
 
-  defp parse_response(player_response) do
-    Enum.find(@moves, fn move -> move.response == player_response end)
+  defp parse_response("X", oponent) do
+    {move, _} = Enum.find(@winning_response, fn {_looser, winner} ->  winner == oponent end)
+    move
   end
+
+  defp parse_response("Y", oponent), do: oponent
+
+  defp parse_response("Z", oponent) do
+    {_, move} = Enum.find(@winning_response, fn {looser, _winner} ->  looser == oponent end)
+    move
+  end
+
 end

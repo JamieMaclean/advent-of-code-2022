@@ -8,9 +8,7 @@ defmodule Mix.Tasks.Day2 do
     |> Enum.map(&String.split(&1, " "))
     |> remove_last_item()
     |> create_games()
-    |> IO.inspect()
     |> Enum.map(&Day2.Game.score_game/1)
-    |> IO.inspect()
     |> cumulative_scores()
     |> IO.inspect()
   end
