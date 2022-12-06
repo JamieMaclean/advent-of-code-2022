@@ -29,8 +29,8 @@ defmodule Day2.Game do
     }
   end
 
-  defp score_player(move, oponoent) do
-    result_score(move, oponoent) + move.score
+  defp score_player(move, oponent) do
+    result_score(move, oponent) + move.score
   end
 
   def result_score(move, oponent) when move == oponent, do: 3
