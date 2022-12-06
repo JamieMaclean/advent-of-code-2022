@@ -1,9 +1,6 @@
-defmodule Mix.Tasks.Day1 do
-  use Mix.Task
-
-  @impl Mix.Task
-  def run(_) do
-    File.read!("lib/mix/tasks/day_1/input.txt")
+defmodule Day1 do
+  def run() do
+    File.read!("lib/day_1/input.txt")
     |> String.split("\n\n")
     |> Enum.map(&String.split(&1, "\n"))
     |> Enum.map(&convert_to_ints/1)

@@ -1,11 +1,8 @@
-defmodule Mix.Tasks.Day2 do
-  use Mix.Task
-
+defmodule Day2 do
   alias Day2.Game
 
-  @impl Mix.Task
-  def run(_) do
-    File.read!("lib/mix/tasks/day_2/input.txt")
+  def run() do
+    File.read!("lib/day_2/input.txt")
     |> String.split("\n", trim: true)
     |> Enum.map(fn moves -> 
       String.split(moves, " ", trim: true)
