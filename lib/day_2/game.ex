@@ -13,12 +13,19 @@ defmodule Day2.Game do
     %Scissors{} => %Rock{}
   }
 
-  def new([move_1, move_2]) do
+  def new_with_move_hint([move_1, move_2]) do
+    %Game{
+      player_1: parse_move(move_1),
+      player_2: get_move_from_hint(move_2)
+    }
+  end
+
+  def new_with_result_hint([move_1, move_2]) do
     player_1 = parse_move(move_1)
 
     %Game{
       player_1: player_1,
-      player_2: parse_response(move_2, player_1)
+      player_2: get_move_for_result(move_2, player_1)
     }
   end
 
@@ -47,14 +54,18 @@ defmodule Day2.Game do
     Enum.find(@moves, fn move -> move.move == player_move end)
   end
 
-  defp parse_response("X", oponent) do
+  defp get_move_from_hint("X"), do: %Rock{}
+  defp get_move_from_hint("Y"), do: %Paper{}
+  defp get_move_from_hint("Z"), do: %Scissors{}
+
+  defp get_move_for_result("X", oponent) do
     {move, _} = Enum.find(@winning_response, fn {_looser, winner} -> winner == oponent end)
     move
   end
 
-  defp parse_response("Y", oponent), do: oponent
+  defp get_move_for_result("Y", oponent), do: oponent
 
-  defp parse_response("Z", oponent) do
+  defp get_move_for_result("Z", oponent) do
     {_, move} = Enum.find(@winning_response, fn {looser, _winner} -> looser == oponent end)
     move
   end
