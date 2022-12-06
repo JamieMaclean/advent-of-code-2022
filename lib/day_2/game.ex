@@ -10,7 +10,7 @@ defmodule Day2.Game do
   @winning_response %{
     %Rock{} => %Paper{},
     %Paper{} => %Scissors{},
-    %Scissors{} => %Rock{},
+    %Scissors{} => %Rock{}
   }
 
   def new([move_1, move_2]) do
@@ -37,7 +37,7 @@ defmodule Day2.Game do
 
   def result_score(move, oponent) do
     if Map.get(@winning_response, oponent) == move do
-      6 
+      6
     else
       0
     end
@@ -48,15 +48,14 @@ defmodule Day2.Game do
   end
 
   defp parse_response("X", oponent) do
-    {move, _} = Enum.find(@winning_response, fn {_looser, winner} ->  winner == oponent end)
+    {move, _} = Enum.find(@winning_response, fn {_looser, winner} -> winner == oponent end)
     move
   end
 
   defp parse_response("Y", oponent), do: oponent
 
   defp parse_response("Z", oponent) do
-    {_, move} = Enum.find(@winning_response, fn {looser, _winner} ->  looser == oponent end)
+    {_, move} = Enum.find(@winning_response, fn {looser, _winner} -> looser == oponent end)
     move
   end
-
 end
