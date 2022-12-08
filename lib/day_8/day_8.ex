@@ -1,6 +1,6 @@
 defmodule Day8 do
   defmodule Tree do
-    defstruct [:size, visible: false, viewing_distance: 1]
+    defstruct [:size, visible: false, scenic_score: 1]
   end
 
   def run(file) do
@@ -47,9 +47,9 @@ defmodule Day8 do
   end
 
   def get_best_tree(forrest) do
-    Enum.reduce(forrest, %Tree{viewing_distance: 0}, fn row, acc ->
+    Enum.reduce(forrest, %Tree{scenic_score: 0}, fn row, acc ->
       Enum.reduce(row, acc, fn tree, acc_2 ->
-        if tree.viewing_distance > acc_2.viewing_distance do
+        if tree.scenic_score > acc_2.scenic_score do
           tree
         else
           acc_2
@@ -73,7 +73,7 @@ defmodule Day8 do
   def survey_forrest(forrest) do
     Enum.map(forrest, fn [tree | trees_after] ->
       check_row_visability([], tree, trees_after)
-      |> check_viewing_distance()
+      |> check_scenic_score()
     end)
   end
 
@@ -96,30 +96,30 @@ defmodule Day8 do
     end
   end
 
-  def check_viewing_distance([first | rest]) do
-    check_viewing_distance([], first, rest)
+  def check_scenic_score([first | rest]) do
+    check_scenic_score([], first, rest)
   end
 
-  def check_viewing_distance([], tree, [next | rest]) do
-    tree = struct(tree, viewing_distance: 0)
-    check_viewing_distance([tree], next, rest)
+  def check_scenic_score([], tree, [next | rest]) do
+    tree = struct(tree, scenic_score: 0)
+    check_scenic_score([tree], next, rest)
   end
 
-  def check_viewing_distance(before, tree, []) do
-    tree = struct(tree, viewing_distance: 0)
+  def check_scenic_score(before, tree, []) do
+    tree = struct(tree, scenic_score: 0)
     [tree | before]
   end
 
-  def check_viewing_distance(before, tree, [next | rest] = trees_after) do
-    viewing_distance =
-      tree.viewing_distance * check_viewing_distance(before, tree) *
-        check_viewing_distance(trees_after, tree)
+  def check_scenic_score(before, tree, [next | rest] = trees_after) do
+    scenic_score =
+      tree.scenic_score * check_scenic_score(before, tree) *
+        check_scenic_score(trees_after, tree)
 
-    tree = struct(tree, viewing_distance: viewing_distance)
-    check_viewing_distance([tree | before], next, rest)
+    tree = struct(tree, scenic_score: scenic_score)
+    check_scenic_score([tree | before], next, rest)
   end
 
-  def check_viewing_distance(trees, current_tree) do
+  def check_scenic_score(trees, current_tree) do
     Enum.reduce_while(trees, 0, fn tree_before, distance ->
       cond do
         tree_before.size < current_tree.size -> {:cont, distance + 1}

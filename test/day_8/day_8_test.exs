@@ -6,6 +6,6 @@ defmodule Day8Test do
 
   test "completes challenge successfully" do
     assert Day8.run("test/day_8/input.txt") ==
-             {21, %Tree{size: 5, viewing_distance: 8, visible: true}}
+             {21, %Tree{size: 5, scenic_score: 8, visible: true}}
   end
 end
