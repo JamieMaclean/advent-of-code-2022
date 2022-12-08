@@ -47,11 +47,11 @@ defmodule Day8 do
 
   def get_best_tree(forrest) do
     for row <- forrest, tree <- row, reduce: %Tree{scenic_score: 0} do
-      acc ->
-        if tree.scenic_score > acc.scenic_score do
+      old_tree ->
+        if tree.scenic_score > old_tree.scenic_score do
           tree
         else
-          acc
+          old_tree
         end
     end
   end
