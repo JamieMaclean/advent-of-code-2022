@@ -62,38 +62,46 @@ defmodule Day8 do
     forrest_height = length(forrest)
     forrest_width = length(Enum.at(forrest, 0))
 
-    for x <- 0..(forrest_height - 1) do
-      for y <- 0..(forrest_width - 1) do
-        Enum.at(forrest, y)
-        |> Enum.at(x)
+    for y <- 0..(forrest_height - 1) do
+      for x <- 0..(forrest_width - 1) do
+        Enum.at(forrest, x)
+        |> Enum.at(y)
       end
     end
   end
 
   def survey_forrest(forrest) do
     Enum.map(forrest, fn [tree | trees_after] ->
-      check_row_visability([], tree, trees_after)
+      check_row_visibility([], tree, trees_after)
       |> check_scenic_score()
     end)
   end
 
-  def check_row_visability([], tree, [next | rest]) do
+  def check_row_visibility([], tree, [next | rest]) do
     tree = struct(tree, visible: true)
-    check_row_visability([tree], next, rest)
+    check_row_visibility([tree], next, rest)
   end
 
-  def check_row_visability(before, tree, []) do
+  def check_row_visibility(before, tree, []) do
     tree = struct(tree, visible: true)
     [tree | before]
   end
 
-  def check_row_visability(before, tree, [next | rest] = trees_after) do
+  def check_row_visibility(before, tree, [next | rest] = trees_after) do
     if is_visible?(before, tree, trees_after) do
       tree = struct(tree, visible: true)
-      check_row_visability([tree | before], next, rest)
+      check_row_visibility([tree | before], next, rest)
     else
-      check_row_visability([tree | before], next, rest)
+      check_row_visibility([tree | before], next, rest)
     end
+  end
+
+  def is_visible?(trees_before, tree, trees_after) do
+    is_visible?(trees_before, tree) || is_visible?(trees_after, tree)
+  end
+
+  def is_visible?(outer_trees, tree) do
+    Enum.all?(outer_trees, fn outer_tree -> outer_tree.size < tree.size end)
   end
 
   def check_scenic_score([first | rest]) do
@@ -126,13 +134,5 @@ defmodule Day8 do
         tree_before.size >= current_tree.size -> {:halt, distance + 1}
       end
     end)
-  end
-
-  def is_visible?(trees_before, tree, trees_after) do
-    is_visible?(trees_before, tree) || is_visible?(trees_after, tree)
-  end
-
-  def is_visible?(outer_trees, tree) do
-    Enum.all?(outer_trees, fn outer_tree -> outer_tree.size < tree.size end)
   end
 end
