@@ -29,7 +29,7 @@ defmodule Day5 do
         parse_row(row)
       end)
       |> Enum.reject(&is_nil/1)
-      |> invert_stacks()
+      |> transpose_stacks()
       |> Enum.reverse()
       |> Enum.map(fn stack -> List.to_string(stack) end)
       |> Enum.with_index()
@@ -94,7 +94,7 @@ defmodule Day5 do
     parse_row(rest, [letter | parsed_row])
   end
 
-  def invert_stacks(stacks) do
+  def transpose_stacks(stacks) do
     Enum.zip(stacks)
     |> Enum.map(&Tuple.to_list/1)
   end

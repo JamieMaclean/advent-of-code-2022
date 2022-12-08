@@ -7,7 +7,7 @@ defmodule Day8 do
     forrest =
       get_forrest(file)
       |> survey_forrest()
-      |> invert_forrest()
+      |> transpose_forrest()
       |> survey_forrest()
 
     part_1 =
@@ -58,7 +58,7 @@ defmodule Day8 do
     end)
   end
 
-  def invert_forrest(forrest) do
+  def transpose_forrest(forrest) do
     Enum.zip(forrest)
     |> Enum.map(&Tuple.to_list/1)
   end
