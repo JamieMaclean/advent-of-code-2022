@@ -59,15 +59,8 @@ defmodule Day8 do
   end
 
   def invert_forrest(forrest) do
-    forrest_height = length(forrest)
-    forrest_width = length(Enum.at(forrest, 0))
-
-    for y <- 0..(forrest_height - 1) do
-      for x <- 0..(forrest_width - 1) do
-        Enum.at(forrest, x)
-        |> Enum.at(y)
-      end
-    end
+    Enum.zip(forrest)
+    |> Enum.map(&Tuple.to_list/1)
   end
 
   def survey_forrest(forrest) do
