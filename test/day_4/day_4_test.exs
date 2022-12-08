@@ -4,7 +4,6 @@ defmodule Day4Test do
   alias Day4
 
   test "asserts day 3 test score" do
-    assert true
-    # assert Day4.run("test/day_4/input.txt") == {2, 0}
+    assert Day4.run("test/day_4/input.txt") == {2, 4}
   end
 end

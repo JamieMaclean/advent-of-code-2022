@@ -1,11 +1,22 @@
 defmodule Day4 do
   def run(file) do
-    part_1 =
+    pairs =
       get_elf_pairs(file)
       |> get_sections()
-      |> IO.inspect(label: "Total Rucksack Priority:")
 
-    {part_1, 0}
+    part_1 =
+      pairs
+      |> get_useless_pairs()
+      |> Enum.count()
+      |> IO.inspect(label: "Total number of useless pairs:")
+
+    part_2 =
+      pairs
+      |> get_overlapping_pairs()
+      |> Enum.count()
+      |> IO.inspect(label: "Total number of overlapping pairs:")
+
+    {part_1, part_2}
   end
 
   def get_elf_pairs(filename) do
@@ -13,63 +24,46 @@ defmodule Day4 do
     |> String.split("\n", trim: true)
   end
 
-  def get_sections(elfs) do
-    String.split(elfs, ",")
-    |> Enum.map(fn sections ->
-      {first, last} =
-        String.split(sections, "-")
-        |> Enum.map(&String.to_integer/1)
+  def get_sections(elf_pairs) do
+    Enum.map(elf_pairs, fn pair ->
+      String.split(pair, ",")
+      |> Enum.map(fn sections ->
+        [first, last] =
+          String.split(sections, "-", trim: true)
+          |> Enum.map(&String.to_integer/1)
 
-      first..last
+        first..last
+      end)
     end)
   end
 
-  def prioritize_rucksacks(input) do
-    Enum.map(input, fn items ->
-      create_rucksack(items)
-      |> split_rucksack()
-      |> get_duplicated_item()
-      |> prioritize_item()
-    end)
-    |> Enum.sum()
+  def get_useless_pairs(elf_pairs) do
+    Enum.filter(elf_pairs, &one_range_within_other?/1)
   end
 
-  def prioritize_groups(input) do
-    Enum.chunk_every(input, 3)
-    |> Enum.map(fn rucksacks ->
-      Enum.map(rucksacks, &create_rucksack/1)
-      |> get_duplicated_item()
-      |> prioritize_item()
-    end)
-    |> Enum.sum()
+  def get_overlapping_pairs(elf_pairs) do
+    Enum.filter(elf_pairs, &overlap?/1)
   end
 
-  def create_rucksack(string) do
-    String.graphemes(string)
+  def overlap?([min_1..max_1 = range_1, min_2..max_2 = range_2]) do
+    cond do
+      number_within_range(min_1, range_2) -> true
+      number_within_range(max_1, range_2) -> true
+      number_within_range(min_2, range_1) -> true
+      number_within_range(max_2, range_1) -> true
+      true -> false
+    end
   end
 
-  def split_rucksack(items) do
-    items_per_compartment = round(length(items) / 2)
-
-    Enum.split(items, items_per_compartment)
-    |> Tuple.to_list()
+  def one_range_within_other?([min_1..max_1 = range_1, min_2..max_2 = range_2]) do
+    cond do
+      number_within_range(min_1, range_2) and number_within_range(max_1, range_2) -> true
+      number_within_range(min_2, range_1) and number_within_range(max_2, range_1) -> true
+      true -> false
+    end
   end
 
-  def get_duplicated_item([item]), do: item
-
-  def get_duplicated_item([compartment_1 | [compartment_2 | rest]]) do
-    duplicated_item =
-      MapSet.intersection(MapSet.new(compartment_1), MapSet.new(compartment_2))
-      |> MapSet.to_list()
-
-    get_duplicated_item([duplicated_item | rest])
-  end
-
-  defp prioritize_item([<<letter>>]) when letter in ?a..?z do
-    letter - ?a + 1
-  end
-
-  defp prioritize_item([<<letter>>]) when letter in ?A..?Z do
-    letter - ?A + 27
+  def number_within_range(number, min..max) do
+    number >= min && number <= max
   end
 end
