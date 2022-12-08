@@ -35,27 +35,25 @@ defmodule Day8 do
   end
 
   def count_visible_trees(forrest) do
-    Enum.reduce(forrest, 0, fn row, acc ->
-      Enum.reduce(row, acc, fn tree, acc_2 ->
+    for row <- forrest, tree <- row, reduce: 0 do
+      visible_trees ->
         if tree.visible do
-          acc_2 + 1
+          visible_trees + 1
         else
-          acc_2
+          visible_trees
         end
-      end)
-    end)
+    end
   end
 
   def get_best_tree(forrest) do
-    Enum.reduce(forrest, %Tree{scenic_score: 0}, fn row, acc ->
-      Enum.reduce(row, acc, fn tree, acc_2 ->
-        if tree.scenic_score > acc_2.scenic_score do
+    for row <- forrest, tree <- row, reduce: %Tree{scenic_score: 0} do
+      acc ->
+        if tree.scenic_score > acc.scenic_score do
           tree
         else
-          acc_2
+          acc
         end
-      end)
-    end)
+    end
   end
 
   def transpose_forrest(forrest) do
