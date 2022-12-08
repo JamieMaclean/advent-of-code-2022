@@ -1,15 +1,14 @@
 defmodule Day5 do
   def run(file) do
-    [stacks, instructions] =
-      parse_input(file)
+    [stacks, instructions] = parse_input(file)
 
-    part_1 = 
+    part_1 =
       make_move(stacks, instructions, 9000)
       |> Enum.map(fn {<<first::binary-size(1), _::binary>>, _} -> first end)
       |> List.to_string()
       |> IO.inspect(label: "Top of each stack:")
 
-    part_2 = 
+    part_2 =
       make_move(stacks, instructions, 9001)
       |> Enum.map(fn {<<first::binary-size(1), _::binary>>, _} -> first end)
       |> List.to_string()
@@ -24,9 +23,9 @@ defmodule Day5 do
       |> File.read!()
       |> String.split("\n\n", trim: true)
 
-    stacks = 
+    stacks =
       String.split(stacks, "\n", trim: true)
-      |> Enum.map(fn row -> 
+      |> Enum.map(fn row ->
         parse_row(row)
       end)
       |> Enum.reject(&is_nil/1)
@@ -51,10 +50,12 @@ defmodule Day5 do
   end
 
   def make_move(stacks, [[quantity, from, to] | other_moves], crane_type) do
-    {<<moved::binary-size(quantity), remaining_from::binary>>, _} = Enum.find(stacks, fn {_, index} -> index == from - 1 end)
+    {<<moved::binary-size(quantity), remaining_from::binary>>, _} =
+      Enum.find(stacks, fn {_, index} -> index == from - 1 end)
+
     {to_stack, _} = Enum.find(stacks, fn {_, index} -> index == to - 1 end)
 
-    updated_to_stack = 
+    updated_to_stack =
       if crane_type == 9000 do
         String.reverse(moved) <> to_stack
       else
@@ -94,7 +95,7 @@ defmodule Day5 do
   end
 
   def invert_stacks(stacks) do
-    Enum.zip(stacks) 
+    Enum.zip(stacks)
     |> Enum.map(&Tuple.to_list/1)
   end
 end
