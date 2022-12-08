@@ -14,7 +14,7 @@ defmodule Day6 do
   end
 
   def get_marker(string, marker_size, count) do
-    <<head, marker::binary-size(marker_size-1), rest::binary>> = string
+    <<head, marker::binary-size(marker_size - 1), rest::binary>> = string
 
     String.graphemes(<<head>> <> marker)
     |> Enum.uniq()
@@ -26,8 +26,9 @@ defmodule Day6 do
   end
 
   def get_signal(filename) do
-    [signal] = File.read!(filename)
-    |> String.split("\n", trim: true)
+    [signal] =
+      File.read!(filename)
+      |> String.split("\n", trim: true)
 
     signal
   end
