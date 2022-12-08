@@ -5,7 +5,7 @@ defmodule Day7Test do
   alias Day7.{Directory, Filesystem, Action}
 
   test "completes challenge successfully" do
-    assert Day7.run("test/day_7/input.txt") == {95437, 24933642}
+    assert Day7.run("test/day_7/input.txt") == {95437, 24_933_642}
   end
 
   describe "update_file_system/3" do
