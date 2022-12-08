@@ -133,6 +133,6 @@ defmodule Day8 do
   end
 
   def is_visible?(outer_trees, tree) do
-    Enum.all?(outer_trees, fn outer_tree -> outer_tree < tree end)
+    Enum.all?(outer_trees, fn outer_tree -> outer_tree.size < tree.size end)
   end
 end
