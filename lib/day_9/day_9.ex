@@ -34,18 +34,9 @@ defmodule Day9 do
   end
 
   def new_rope(length) do
-    [head | _rest] =
-      for _ <- 1..length, reduce: [] do
-        [] ->
-          {:ok, knot} = Knot.start_link(nil)
-          [knot]
-
-        [tail | _] = rope ->
-          {:ok, knot} = Knot.start_link(tail)
-          [knot | rope]
-      end
-
-    head
+    for _ <- 1..length, reduce: nil do
+      tail -> Knot.start_link(tail)
+    end
   end
 
   def get_moves(filename) do

@@ -2,7 +2,8 @@ defmodule Day9.Knot do
   use GenServer
 
   def start_link(tail) do
-    GenServer.start_link(__MODULE__, tail)
+    {:ok, knot} = GenServer.start_link(__MODULE__, tail)
+    knot
   end
 
   def move(pid, direction) do
