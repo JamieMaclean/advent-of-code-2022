@@ -108,6 +108,6 @@ defmodule Day9.Knot do
   end
 
   defp head_within_range?({current_x, current_y}, {head_x, head_y}) do
-    current_x - head_x in -1..1 && current_y - head_y in -1..1
+    (current_x - head_x) in -1..1 && (current_y - head_y) in -1..1
   end
 end

@@ -19,7 +19,6 @@ defmodule Day9 do
       |> Enum.uniq()
       |> Enum.count()
       |> IO.inspect(label: "Part 2 unique spots:")
-    
 
     {part_1, part_2}
   end
@@ -54,7 +53,8 @@ defmodule Day9 do
       File.read!(filename)
       |> String.split("\n", trim: true)
 
-    for <<direction::binary-size(1), 32, number::binary>> <- moves, _ <- 1..String.to_integer(number) do
+    for <<direction::binary-size(1), 32, number::binary>> <- moves,
+        _ <- 1..String.to_integer(number) do
       direction
     end
   end
