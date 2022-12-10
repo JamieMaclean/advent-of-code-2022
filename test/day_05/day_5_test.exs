@@ -4,6 +4,6 @@ defmodule Day5Test do
   alias Day5
 
   test "asserts day 3 test score" do
-    assert Day5.run("test/day_5/input.txt") == {"CMZ", "MCD"}
+    assert Day5.run("test/day_05/input.txt") == {"CMZ", "MCD"}
   end
 end

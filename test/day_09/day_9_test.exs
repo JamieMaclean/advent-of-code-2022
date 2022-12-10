@@ -4,6 +4,6 @@ defmodule Day9Test do
   alias Day9
 
   test "completes challenge successfully" do
-    assert Day9.run("test/day_9/input.txt") == {88, 36}
+    assert Day9.run("test/day_09/input.txt") == {88, 36}
   end
 end
