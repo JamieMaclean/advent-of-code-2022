@@ -114,11 +114,9 @@ defmodule Day8 do
   end
 
   def check_scenic_score(trees, current_tree) do
-    Enum.reduce_while(trees, 0, fn tree_before, distance ->
-      cond do
-        tree_before.size < current_tree.size -> {:cont, distance + 1}
-        tree_before.size >= current_tree.size -> {:halt, distance + 1}
-      end
+    Enum.reduce_while(trees, 0, fn
+      tree, d when tree.size < current_tree.size -> {:cont, d + 1}
+      tree, d when tree.size >= current_tree.size -> {:halt, d + 1}
     end)
   end
 end

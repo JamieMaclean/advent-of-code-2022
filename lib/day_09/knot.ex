@@ -51,19 +51,18 @@ defmodule Day9.Knot do
         {:head_moved, head_position},
         %{position: current_position, history: history, tail: tail} = state
       ) do
-    %{position: new_position} =
-      new_state =
+    new_state =
       if head_within_range?(current_position, head_position) do
         state
       else
         new_position = new_tail_position(current_position, head_position)
 
+        if not is_nil(tail) do
+          head_moved(tail, new_position)
+        end
+
         %{state | position: new_position, history: [new_position | history]}
       end
-
-    if not is_nil(tail) do
-      head_moved(tail, new_position)
-    end
 
     {:noreply, new_state}
   end
