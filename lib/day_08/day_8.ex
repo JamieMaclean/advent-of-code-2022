@@ -35,13 +35,8 @@ defmodule Day8 do
   end
 
   def count_visible_trees(forrest) do
-    for row <- forrest, tree <- row, reduce: 0 do
-      visible_trees ->
-        if tree.visible do
-          visible_trees + 1
-        else
-          visible_trees
-        end
+    for row <- forrest, tree <- row, tree.visible, reduce: 0 do
+      visible_trees -> visible_trees + 1
     end
   end
 
