@@ -61,8 +61,8 @@ defmodule Day11 do
 
   def complete_rounds(item, monkeys, rounds, mod) do
     for round <- 1..rounds, reduce: item do
-      current_item -> 
-      throw(current_item, monkeys, round == rounds, mod)
+      current_item ->
+        throw(current_item, monkeys, round == rounds, mod)
     end
   end
 
@@ -88,12 +88,16 @@ defmodule Day11 do
         %{
           value: new_value,
           history: [destination | history]
-        }, monkeys, last_round?, mod)
+        },
+        monkeys,
+        last_round?,
+        mod
+      )
     end
   end
 
   def create_operation("*", "old") do
-    fn old -> (old * old) end
+    fn old -> old * old end
   end
 
   def create_operation("+", "old") do
