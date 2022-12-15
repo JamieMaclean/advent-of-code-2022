@@ -5,20 +5,22 @@ defmodule Day12 do
     visited = []
     frontier = [%{point: start, history: [start]}]
 
-    #%{history: h} = find_end_point(terrain, frontier, visited)
-    #IO.inspect(length(h), label: "part 1")
+    %{history: h} = find_end_point(terrain, frontier, visited)
+    IO.inspect(length(h), label: "part 1")
 
-    terrain = put_in(terrain, [20, 77], 25)
-    frontier = [%{point: {20, 77}, history: [{20, 77}]}]
-    %{history: h} = find_end_point(terrain, frontier, visited, :part_2)
+    # PART 2 - Need to change the climbing range but it works
+    # Will return to clean it up at some point :)
+    
+    #terrain = put_in(terrain, [20, 77], 25)
+    #frontier = [%{point: {20, 77}, history: [{20, 77}]}]
+    #%{history: h} = find_end_point(terrain, frontier, visited, :part_2)
 
-    IO.inspect(length(h), label: "part 2")
+    #IO.inspect(length(h), label: "part 2")
 
-    {0, 0}
+    {length(h), 0}
   end
 
   defp find_end_point(terrain, [%{point: {y, x}, history: h} | rest], visited, part \\ :part_1) do
-    IO.inspect({y, x})
     new_points = get_accessible_adjacent_nodes(terrain, {y, x}, visited)
 
     points_only = Enum.map(new_points, fn {point, _} -> point end)
@@ -86,8 +88,8 @@ defmodule Day12 do
     ]
     |> Enum.filter(fn 
       {_, nil} -> false
-      {_, "End"} -> (terrain[y][x] - 25) in -2..1
-      {_, height} -> (terrain[y][x] - height) in -2..1
+      {_, "End"} -> (terrain[y][x] - 25) in -1..2
+      {_, height} -> (terrain[y][x] - height) in -1..2
     end)
     |> Enum.filter(fn 
       {point, _} -> point not in visited

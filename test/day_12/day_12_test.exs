@@ -4,6 +4,6 @@ defmodule Day12Test do
   alias Day12
 
   test "completes challenge successfully" do
-    assert Day12.run("test/day_12/input.txt") == {0, 0}
+    assert Day12.run("test/day_12/input.txt") == {32, 0}
   end
 end
