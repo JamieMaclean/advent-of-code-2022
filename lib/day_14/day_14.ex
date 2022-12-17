@@ -4,18 +4,21 @@ defmodule Day14 do
     [_, {min_y, max_y}] = boundry = get_boundry(rocks)
     sand = [{500, 0}]
 
-    part_1 = drop_sand(sand, rocks, boundry)
-    |> Enum.count()
-    |> Kernel.-(1)
-    |> IO.inspect(label: "Part 1")
+    part_1 =
+      drop_sand(sand, rocks, boundry)
+      |> Enum.count()
+      |> Kernel.-(1)
+      |> IO.inspect(label: "Part 1")
 
     part_2_rocks = [{:infinity, max_y + 2} | rocks]
     part_2_boundry = [{:infinity, :infinity}, {min_y, max_y + 2}]
 
     IO.inspect("=== PART 2 ===")
-    part_2 = drop_sand(sand, part_2_rocks, part_2_boundry)
-    |> Enum.count()
-    |> IO.inspect(label: "Part 2")
+
+    part_2 =
+      drop_sand(sand, part_2_rocks, part_2_boundry)
+      |> Enum.count()
+      |> IO.inspect(label: "Part 2")
 
     {part_1, part_2}
   end
@@ -23,9 +26,9 @@ defmodule Day14 do
   def get_cave(filename) do
     File.read!(filename)
     |> String.split("\n", trim: true)
-    |> Enum.map(fn string -> 
+    |> Enum.map(fn string ->
       String.split(string, " -> ", trim: true)
-      |> Enum.map(fn string -> 
+      |> Enum.map(fn string ->
         String.split(string, ",", trim: true)
         |> Enum.map(&String.to_integer/1)
         |> List.to_tuple()
@@ -34,7 +37,11 @@ defmodule Day14 do
     |> parse_structures
   end
 
-  def drop_sand([current | _rest] = sand, rocks, [{:infinity, :infinity}, {_min_y, max_y}] = boundry) do
+  def drop_sand(
+        [current | _rest] = sand,
+        rocks,
+        [{:infinity, :infinity}, {_min_y, max_y}] = boundry
+      ) do
     [{_x, y} = new_position | _] = new_sand = increment_sand(sand, rocks, max_y)
 
     cond do
@@ -58,24 +65,26 @@ defmodule Day14 do
   end
 
   def increment_sand([{x, y} | sand], rocks) do
-    new_position = cond do
-      {x, y + 1} not in rocks and {x, y + 1} not in sand -> {x, y + 1}
-      {x - 1, y + 1} not in rocks and {x - 1, y + 1} not in sand -> {x - 1, y + 1}
-      {x + 1, y + 1} not in rocks and {x + 1, y + 1} not in sand -> {x + 1, y + 1}
-      true -> {x, y}
-    end
+    new_position =
+      cond do
+        {x, y + 1} not in rocks and {x, y + 1} not in sand -> {x, y + 1}
+        {x - 1, y + 1} not in rocks and {x - 1, y + 1} not in sand -> {x - 1, y + 1}
+        {x + 1, y + 1} not in rocks and {x + 1, y + 1} not in sand -> {x + 1, y + 1}
+        true -> {x, y}
+      end
 
     [new_position | sand]
   end
 
   def increment_sand([{x, y} | sand], rocks, max_y) do
-    new_position = cond do
-      (y + 1) == max_y -> {x, y}
-      {x, y + 1} not in rocks and {x, y + 1} not in sand -> {x, y + 1}
-      {x - 1, y + 1} not in rocks and {x - 1, y + 1} not in sand -> {x - 1, y + 1}
-      {x + 1, y + 1} not in rocks and {x + 1, y + 1} not in sand -> {x + 1, y + 1}
-      true -> {x, y}
-    end
+    new_position =
+      cond do
+        y + 1 == max_y -> {x, y}
+        {x, y + 1} not in rocks and {x, y + 1} not in sand -> {x, y + 1}
+        {x - 1, y + 1} not in rocks and {x - 1, y + 1} not in sand -> {x - 1, y + 1}
+        {x + 1, y + 1} not in rocks and {x + 1, y + 1} not in sand -> {x + 1, y + 1}
+        true -> {x, y}
+      end
 
     [new_position | sand]
   end
@@ -88,10 +97,10 @@ defmodule Day14 do
   end
 
   def parse_structures(structures) do
-    Enum.map(structures, fn structure -> 
-      get_all_points(structure) 
+    Enum.map(structures, fn structure ->
+      get_all_points(structure)
       |> Enum.uniq()
-    end) 
+    end)
     |> List.flatten()
   end
 
@@ -99,7 +108,7 @@ defmodule Day14 do
     [{x, y}]
   end
 
-  def get_all_points([point_1 | [point_2 | rest ]]) do
+  def get_all_points([point_1 | [point_2 | rest]]) do
     get_points_between(point_1, point_2) ++ get_all_points([point_2 | rest])
   end
 

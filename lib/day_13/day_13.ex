@@ -2,29 +2,33 @@ defmodule Day13 do
   def run(file) do
     pairs = get_pairs(file)
 
-    compared = Enum.map(pairs, fn [first, second] -> 
-      case compare(first, second) do
-        nil -> true
-        bool -> bool
-      end
-    end)
+    compared =
+      Enum.map(pairs, fn [first, second] ->
+        case compare(first, second) do
+          nil -> true
+          bool -> bool
+        end
+      end)
 
-    {sum, _} = for bool <- compared, reduce: {0, 0} do
-      {sum, index} -> if bool do
-          {sum + index + 1, index + 1}
-      else
-          {sum, index + 1}
+    {sum, _} =
+      for bool <- compared, reduce: {0, 0} do
+        {sum, index} ->
+          if bool do
+            {sum + index + 1, index + 1}
+          else
+            {sum, index + 1}
+          end
       end
-    end
 
     IO.inspect(sum, label: "Part 1")
 
-    part_2 = for [first, second] <- pairs, reduce: [] do
-      list -> [first | [second | list]]
-    end
-    |> Enum.concat([[[6]]])
-    |> Enum.concat([[[2]]])
-    |> Enum.sort(&compare/2)
+    part_2 =
+      for [first, second] <- pairs, reduce: [] do
+        list -> [first | [second | list]]
+      end
+      |> Enum.concat([[[6]]])
+      |> Enum.concat([[[2]]])
+      |> Enum.sort(&compare/2)
 
     first = Enum.find_index(part_2, fn val -> val == [[2]] end) + 1
     second = Enum.find_index(part_2, fn val -> val == [[6]] end) + 1
@@ -38,9 +42,9 @@ defmodule Day13 do
   def get_pairs(filename) do
     File.read!(filename)
     |> String.split("\n\n", trim: true)
-    |> Enum.map(fn pair -> 
+    |> Enum.map(fn pair ->
       String.split(pair, "\n", trim: true)
-      |> Enum.map(fn list -> 
+      |> Enum.map(fn list ->
         String.graphemes(list)
         |> parse_list()
       end)
@@ -66,7 +70,8 @@ defmodule Day13 do
     parse_list(rest, [inner_list | list])
   end
 
-  defp parse_list([<<digit_1>> | [<<digit_2>> | rest]], list) when digit_1 in ?0..?9 and digit_2 in ?0..?9 do
+  defp parse_list([<<digit_1>> | [<<digit_2>> | rest]], list)
+       when digit_1 in ?0..?9 and digit_2 in ?0..?9 do
     parse_list(rest, [String.to_integer(<<digit_1, digit_2>>) | list])
   end
 
@@ -80,27 +85,35 @@ defmodule Day13 do
 
   defp compare([first | first_rest], [second | second_rest]) do
     cond do
-      is_number(first) and is_number(second) and first < second -> true
-      first == second -> compare(first_rest, second_rest)
+      is_number(first) and is_number(second) and first < second ->
+        true
+
+      first == second ->
+        compare(first_rest, second_rest)
+
       is_list(first) and is_list(second) ->
         case compare(first, second) do
           true -> true
           false -> false
           nil -> compare(first_rest, second_rest)
         end
-      is_list(first) and is_number(second) -> 
+
+      is_list(first) and is_number(second) ->
         case compare(first, [second]) do
           true -> true
           false -> false
           nil -> compare(first_rest, second_rest)
         end
-      is_number(first) and is_list(second) -> 
+
+      is_number(first) and is_list(second) ->
         case compare([first], second) do
           true -> true
           false -> false
           nil -> compare(first_rest, second_rest)
         end
-      true -> false
+
+      true ->
+        false
     end
   end
 end
