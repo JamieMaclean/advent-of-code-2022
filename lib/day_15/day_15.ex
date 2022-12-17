@@ -6,11 +6,6 @@ defmodule Day15 do
     # row = 10
     signals_on_row = signals_on_row(sensors, row)
 
-    beacons_on_row =
-      sensors
-      |> Enum.map(fn {_, {x, y}} -> {x, y} end)
-      |> Enum.filter(fn {_x, y} -> y == row end)
-
     part_1 =
       signals_on_row
       |> Enum.map(&Enum.to_list/1)
